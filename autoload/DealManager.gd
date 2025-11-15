@@ -12,9 +12,7 @@ signal deal_event_happened
 signal forced_turn_happened
 signal deal_event_accepted
 signal deal_event_declined
-signal deal(deal_type)
-signal deal_event_turn_done
-signal forced_turn_done
+signal deal
 
 func pick_deal():
 	current_deal = deal_list[deal_to_pick]
@@ -28,7 +26,6 @@ func reset_deals():
 func do_deal_event_turn(turn_number):
 	if not deal_accepted_flag and (turn_number % deal_turn_modifier + randi_range(-2, 2) == 0):
 		pick_deal()
-		deal_event_happened.emit()
 		return true
 	else:
 		return false
@@ -36,8 +33,6 @@ func do_deal_event_turn(turn_number):
 func do_forced_turn(turn_number):
 	if turn_number == next_forced_turn:
 		deal.emit(current_deal)
-		print(current_deal)
-		forced_turn_happened.emit()
 		deal_accepted_flag = false
 		return true
 	else:
@@ -47,7 +42,12 @@ func deal_accepted():
 	deal_accepted_flag = true
 	next_forced_turn = TurnManager.current_turn + randi_range(2, 5)
 	deal_event_accepted.emit()
+	deal_event_happened.emit()
 
 func deal_declined():
 	deal_accepted_flag = false
 	deal_event_declined.emit()
+	deal_event_happened.emit()
+
+func forced_turn_completed():
+	forced_turn_happened.emit()

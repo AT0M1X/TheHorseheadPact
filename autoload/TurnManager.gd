@@ -41,12 +41,12 @@ func do_turn():
 	
 	emit_signal("start_turn", current_turn) 
 	var is_deal_event_turn = DealManager.do_deal_event_turn(current_turn)
-	#if is_deal_event_turn:
-	#	await DealManager.deal_event_turn_done
+	if is_deal_event_turn:
+		await DealManager.deal_event_happened
 	
 	var is_forced_turn = DealManager.do_forced_turn(current_turn)
-	#if is_forced_turn:
-	#	await DealManager.forced_turn_done
+	if is_forced_turn:
+		await DealManager.forced_turn_happened
 	
 	player.take_turn()
 	await player.turn_done
