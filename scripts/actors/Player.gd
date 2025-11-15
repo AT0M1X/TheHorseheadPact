@@ -10,6 +10,7 @@ signal turn_done
 
 func _ready():
 	TurnManager.register_player(self)
+	DealManager.connect("forced_turn_action", force_move)
 
 func take_turn():
 	can_act = true
@@ -71,3 +72,14 @@ func shoot(dir: Vector2):
 func end_turn():
 	can_act = false
 	emit_signal("turn_done")
+
+func force_move(deal_type: String):
+	match deal_type:
+		"move up":
+			try_move(Vector2.UP)
+		"move down":
+			try_move(Vector2.DOWN)
+		"move right":
+			try_move(Vector2.RIGHT)
+		"move left":
+			try_move(Vector2.LEFT)
