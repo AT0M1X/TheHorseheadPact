@@ -43,4 +43,15 @@ position = Vector2(80, 80)
 position = Vector2(272, 304)
 
 [node name="Enemy3" parent="Enemies" instance=ExtResource("3_wee7o")]
+<<<<<<< Updated upstream
 position = Vector2(304, 80)
+=======
+position = Vector2(2304, 2816)
+
+[node name="Enemy4" parent="Enemies" instance=ExtResource("3_wee7o")]
+position = Vector2(1280, 1280)
+MoveChance = 1.0
+
+[node name="Enemy5" parent="Enemies" instance=ExtResource("3_wee7o")]
+position = Vector2(6912, 1280)
+>>>>>>> Stashed changes
