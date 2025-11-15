@@ -13,20 +13,21 @@ func setup(dir: Vector2, pos: Vector2):
 	check_collision(false)
 	spawn_turn = true
 
-func move() -> bool:
+func move():
 	if spawn_turn:
 		spawn_turn = false
-		return false
+		return
 	
-	if check_collision(true): return true
+	if check_collision(true): return
 	
 	if raycast.is_colliding():
 		var hit = raycast.get_collider()
 		if hit != TurnManager.player and !hit.is_in_group("enemies") and !hit.is_in_group("projectiles"):
-			return true
+			remove_bullet()
+			return
 
 	position += direction * Settings.tile_size
-	return check_collision(false)
+	check_collision(false)
 
 func check_collision(phase_check: bool) -> bool:
 	# Check against player
@@ -61,4 +62,4 @@ func check_collision(phase_check: bool) -> bool:
 
 func remove_bullet():
 	queue_free()
-	TurnManager.bullets.erase(self)
+	TurnManager.dead_bullets.append(self)

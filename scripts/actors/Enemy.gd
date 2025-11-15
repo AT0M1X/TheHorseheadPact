@@ -1,7 +1,10 @@
 extends CharacterBody2D
 
 @export var Bullet : PackedScene
-@export_range(0, 1, 0.05) var MoveChance : float = 0.8
+@export_range(0, 1, 0.05) var MoveChance : float = 0.2
+## Number of turns enemy has to wait to shoot again
+@export var cooldown_turns : int = 1
+var current_cooldown = 0
 
 @onready var raycast: RayCast2D = $RayCast2D
 
@@ -19,10 +22,15 @@ func take_turn():
 	if player == null:
 		return
 
-	if randf() > MoveChance:
+	if randf() < MoveChance:
 		if try_move():
 			return
-
+	
+	# Prevent shooting during cooldown	
+	if current_cooldown > 0:
+		current_cooldown -= 1
+		return
+		
 	if is_axis_aligned_with_player(player) and has_line_of_sight_to(player):
 		if int(player.position.x) == int(position.x):
 			shoot_at_player(0, 1 if player.position.y > position.y else -1)
@@ -60,6 +68,8 @@ func has_line_of_sight_to(player: Node2D) -> bool:
 	return false
 
 func shoot_at_player(x: float, y: float):
+	current_cooldown = cooldown_turns
+	
 	var dir = Vector2(x, y)
 	var pos = position + dir * Settings.tile_size
 	var bullet = Bullet.instantiate()
@@ -68,15 +78,7 @@ func shoot_at_player(x: float, y: float):
 	bullet.spawn_turn = false
 
 func try_move() -> bool:
-	# Randomly decide direction
-	var x = 0
-	var y = 0
-	if randi() % 2:
-		y = (randi() % 2) * 2 - 1
-	else:
-		x = (randi() % 2) * 2 - 1
-		
-	var direction = Vector2(x, y)
+	var direction = get_move()
 	last_dir = direction
 	var motion = direction * Settings.tile_size
 
@@ -100,3 +102,14 @@ func deal_enemy_action(deal_type: String):
 			elif int(player.position.y) == int(position.y):
 				shoot_at_player(1 if player.position.x > position.x else -1, 0)
 			DealManager.forced_turn_completed()
+
+func get_move() -> Vector2:
+	# Randomly decide direction
+	var x = 0
+	var y = 0
+	if randi() % 2:
+		y = (randi() % 2) * 2 - 1
+	else:
+		x = (randi() % 2) * 2 - 1
+		
+	return Vector2(x, y)

@@ -5,6 +5,8 @@ var current_turn
 var next_deal_turn
 var _enemies := []
 var bullets := []
+var dead_bullets := []
+var state := "player" # "player" or "enemies"
 var game_over := false
 
 signal reset_signal
@@ -81,17 +83,17 @@ func process_enemies():
 				await e.turn_done
 
 func process_bullets():
-	var dead_bullets := []
 	for b in bullets:
 		if game_over:
 			return
-		if is_instance_valid(b) and b.move():
-			dead_bullets.append(b)
+		if is_instance_valid(b):
+			b.move()
 			if b.has_signal("move_done") :
 				await b.move_done
 				
 	for b in dead_bullets:
-		b.remove_bullet()
+		bullets.erase(b)
+	dead_bullets.clear()
 
 func player_die():
 	if game_over:
