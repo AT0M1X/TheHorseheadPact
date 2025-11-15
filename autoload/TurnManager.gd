@@ -81,6 +81,7 @@ func process_enemies():
 				await e.turn_done
 
 func process_bullets():
+	var dead_bullets := []
 	for b in bullets:
 		if game_over:
 			return
@@ -88,6 +89,11 @@ func process_bullets():
 			b.move()
 			if b.has_signal("move_done"):
 				await b.move_done
+		if is_instance_valid(b) and b.move():
+			dead_bullets.append(b)
+				
+	for b in dead_bullets:
+		b.remove_bullet()
 
 func player_die():
 	if game_over:

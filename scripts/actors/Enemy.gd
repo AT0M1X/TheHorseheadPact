@@ -8,6 +8,7 @@ extends CharacterBody2D
 var tile_size = Settings.tile_size
 var move_right = true
 var player
+var last_dir = Vector2()
 
 func _ready():
 	TurnManager.register_enemy(self)
@@ -76,6 +77,7 @@ func try_move() -> bool:
 		x = (randi() % 2) * 2 - 1
 		
 	var direction = Vector2(x, y)
+	last_dir = direction
 	var motion = direction * Settings.tile_size
 
 	# Use move_and_collide to check BEFORE moving
