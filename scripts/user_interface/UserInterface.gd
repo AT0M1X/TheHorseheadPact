@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var finger_counter: TextureRect = $"UI Root/Finger Counter"
 @onready var turn_counter: Label = $"UI Root/Turn Counter"
 @onready var honse_counter: Label = $"UI Root/Honse Counter"
+@onready var honse_action: Label = $"UI Root/Honse Move"
 @onready var accept_button: Button = $"UI Root/Deal/Accept Deal"
 @onready var decline_button: Button = $"UI Root/Deal/Decline Deal"
 @onready var deal: TextureRect = $"UI Root/Deal"
@@ -29,6 +30,7 @@ func _ready():
 	TurnManager.connect("update_turn_counter", _update_turn_counter)
 	TurnManager.connect("update_honse_counter", _update_honse_counter)
 	DealManager.connect("deal_event_start", _show_deal)
+	DealManager.connect("deal_event_next_action", _update_honse_action)
 	
 func _update_finger_counter(finger_count):
 	_set_icon_by_index(5 - finger_count)
@@ -40,6 +42,9 @@ func _update_turn_counter(current_turn):
 	
 func _update_honse_counter(turns_to_forced):
 	honse_counter.text = "Honse Turn In: %s" % turns_to_forced
+	
+func _update_honse_action(action):
+	honse_action.text = "%s" % action
 	
 func _set_icon_by_index(index):
 	if index >= 0 and index < fingers.size():

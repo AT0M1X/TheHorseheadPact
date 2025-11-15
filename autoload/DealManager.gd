@@ -12,6 +12,7 @@ signal deal_event_start
 signal deal_event_end
 signal deal_event_accepted
 signal deal_event_declined
+signal deal_event_next_action(next_action: String)
 signal forced_turn_start
 signal forced_turn_end
 signal forced_turn_action(action: String)
@@ -37,6 +38,7 @@ func do_forced_turn(turn_number):
 	if turn_number == next_forced_turn:
 		forced_turn_start.emit()
 		forced_turn_action.emit(current_deal)
+		deal_event_next_action.emit("")
 		deal_accepted_flag = false
 		return true
 	else:
@@ -47,6 +49,7 @@ func deal_accepted():
 	next_forced_turn = TurnManager.current_turn + randi_range(2, 5)
 	deal_event_accepted.emit()
 	deal_event_end.emit()
+	deal_event_next_action.emit(current_deal)
 	TurnManager.emit_to_ui()
 
 func deal_declined():

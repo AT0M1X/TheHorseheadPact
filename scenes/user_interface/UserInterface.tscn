@@ -70,6 +70,15 @@ text = "Honse Turn In: #"
 label_settings = SubResource("LabelSettings_aovcg")
 horizontal_alignment = 1
 
+[node name="Honse Move" type="Label" parent="UI Root"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 256.0
+offset_right = 205.0
+offset_bottom = 290.0
+label_settings = SubResource("LabelSettings_aovcg")
+horizontal_alignment = 1
+
 [node name="Deal" type="TextureRect" parent="UI Root"]
 layout_mode = 1
 anchors_preset = 8

@@ -97,9 +97,11 @@ func deal_enemy_action(deal_type: String):
 	match deal_type:
 		"All shoot":
 			print(deal_type)
-			if int(player.position.x) == int(position.x):
+			var dx = player.position.x - position.x
+			var dy = player.position.y - position.y
+			if dx*dx < dy*dy:
 				shoot_at_player(0, 1 if player.position.y > position.y else -1)
-			elif int(player.position.y) == int(position.y):
+			else:
 				shoot_at_player(1 if player.position.x > position.x else -1, 0)
 			DealManager.forced_turn_completed()
 
