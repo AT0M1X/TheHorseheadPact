@@ -1,20 +1,22 @@
 extends Node
 
 var player
+var current_turn
+var next_deal_turn
 var _enemies := []
 var bullets := []
-var state := "player" # "player" or "enemies"
 var game_over := false
-var current_turn = 5
 
-signal dealTurnHappened
+signal reset_signal
+signal start_turn(current_turn)
+signal player_died
 
 func reset():
-	_enemies.clear()
-	bullets.clear()
-	state = "player"
+	emit_signal("reset_signal")
 	game_over = false
 	current_turn = 0
+	_enemies.clear()
+	bullets.clear()
 
 func register_player(p):
 	player = p
@@ -33,29 +35,30 @@ func kill_enemy(e):
 func register_bullet(b):
 	bullets.append(b)
 
-func on_player_end_turn():
+func do_turn():
 	if game_over:
 		return
 	
-	if(state == "player"):
-		state = "enemies"
-		
-		next_turn()
+	emit_signal("start_turn", current_turn) 
+	var is_deal_event_turn = DealManager.do_deal_event_turn(current_turn)
+	#if is_deal_event_turn:
+	#	await DealManager.deal_event_turn_done
+	
+	var is_forced_turn = DealManager.do_forced_turn(current_turn)
+	#if is_forced_turn:
+	#	await DealManager.forced_turn_done
+	
+	player.take_turn()
+	await player.turn_done
+	await process_enemies()
+	await process_bullets()
+	
+	end_turn()
 
-		
-	# Let player update before next entity turn
-	await get_tree().physics_frame
-	await get_tree().process_frame
-	
-	state = "enemies"
-	process_bullets()
-	if game_over:
-		return
-	process_enemies()
-	
-	state = "player"
-	if is_instance_valid(player):
-		player.is_my_turn = true
+func end_turn():
+	current_turn += 1
+	if !game_over:
+		call_deferred("do_turn")
 
 func process_enemies():
 	for e in _enemies:
@@ -63,6 +66,8 @@ func process_enemies():
 			return
 		if is_instance_valid(e):
 			e.take_turn()
+			if e.has_signal("turn_done"):
+				await e.turn_done
 
 func process_bullets():
 	for b in bullets:
@@ -70,15 +75,12 @@ func process_bullets():
 			return
 		if is_instance_valid(b):
 			b.move()
+			if b.has_signal("move_done"):
+				await b.move_done
 
 func player_die():
 	if game_over:
 		return
 	
 	game_over = true
-	player.die()
-
-func next_turn():
-	current_turn += 1
-	DealManager.do_deal_event_turn(current_turn)
-	DealManager.do_forced_turn(current_turn)
+	emit_signal("player_died")
