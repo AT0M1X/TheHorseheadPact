@@ -1,6 +1,6 @@
 extends Node
 
-var deal_list = ["All shoot", "move down", "move up"]
+var deal_list = ["All shoot", "move down", "move up", "move right", "move left"]
 var deal_to_pick = 0
 var deal_turn_modifier = 5
 var deal_accepted_flag = false
@@ -17,7 +17,7 @@ signal forced_turn_end
 signal forced_turn_action(action: String)
 
 func pick_deal():
-	current_deal = deal_list[deal_to_pick]
+	current_deal = deal_list[deal_to_pick+randi_range(-1,1)]
 	deal_to_pick += 1
 	reset_deals()
 
