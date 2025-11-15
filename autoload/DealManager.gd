@@ -1,51 +1,53 @@
 extends Node
 
-var dealList = ["All shoot", "move down", "move up"]
-var dealToPick = 0
+var deal_list = ["All shoot", "move down", "move up"]
+var deal_to_pick = 0
 var deal_turn_modifier = 5
-var dealAccepted = false
-var currentDeal
+var deal_accepted_flag = false
+var current_deal
 
-var nextForcedTurn
+var next_forced_turn
 
-signal dealEventHappened
-signal forcedTurnHappened
-signal dealEventAccepted
-signal dealEventDeclined
-signal deal
+signal deal_event_happened
+signal forced_turn_happened
+signal deal_event_accepted
+signal deal_event_declined
+signal deal(deal_type)
+signal deal_event_turn_done
+signal forced_turn_done
 
-func pick_deal ():
-	currentDeal = dealList[dealToPick]
-	dealToPick =+ 1
+func pick_deal():
+	current_deal = deal_list[deal_to_pick]
+	deal_to_pick += 1
 	reset_deals()
 
-func reset_deals ():
-	if(dealToPick == dealList.size()):
-		dealToPick = 0
+func reset_deals():
+	if deal_to_pick == deal_list.size():
+		deal_to_pick = 0
 
 func do_deal_event_turn(turn_number):
-	if (!dealAccepted && (turn_number % deal_turn_modifier + randi_range(-2,2) == 0)):
+	if not deal_accepted_flag and (turn_number % deal_turn_modifier + randi_range(-2, 2) == 0):
 		pick_deal()
-		dealEventHappened.emit()
+		deal_event_happened.emit()
 		return true
 	else:
-		false
+		return false
 
 func do_forced_turn(turn_number):
-	if (turn_number == nextForcedTurn):
-		deal.emit(currentDeal)
-		print(currentDeal)
-		forcedTurnHappened.emit()
-		dealAccepted = false
+	if turn_number == next_forced_turn:
+		deal.emit(current_deal)
+		print(current_deal)
+		forced_turn_happened.emit()
+		deal_accepted_flag = false
 		return true
 	else:
 		return false
 
 func deal_accepted():
-	dealAccepted = true
-	nextForcedTurn = TurnManager.current_turn + randi_range(2,5)
-	dealEventAccepted.emit()
+	deal_accepted_flag = true
+	next_forced_turn = TurnManager.current_turn + randi_range(2, 5)
+	deal_event_accepted.emit()
 
 func deal_declined():
-	dealAccepted = false
-	dealEventDeclined.emit()
+	deal_accepted_flag = false
+	deal_event_declined.emit()

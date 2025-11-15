@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtuhanki4xciu"]
+
+[ext_resource type="Texture2D" uid="uid://bq5nbnu2qmksx" path="res://assets/art/0_-_Full_hand.png" id="1_0duag"]
+[ext_resource type="Script" uid="uid://dqoca2s0s2vlm" path="res://scripts/user_interface/UserInterface.gd" id="1_xfl3k"]
+
+[node name="User Interface" type="CanvasLayer"]
+script = ExtResource("1_xfl3k")
+
+[node name="UI Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Finger Counter" type="TextureRect" parent="UI Root"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 160.0
+offset_bottom = 192.0
+texture = ExtResource("1_0duag")
+expand_mode = 1
+
+[node name="Turn Counter" type="Label" parent="UI Root"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 224.0
+offset_right = 160.0
+offset_bottom = 256.0
+text = "Round: 1"
+horizontal_alignment = 1
+
+[node name="Honse Counter" type="Label" parent="UI Root"]
+offset_left = 32.0
+offset_top = 256.0
+offset_right = 160.0
+offset_bottom = 288.0
+text = "Honse Turn In: #"
+horizontal_alignment = 1
