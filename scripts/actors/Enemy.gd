@@ -17,8 +17,8 @@ func take_turn():
 		return
 
 	if randf() > MoveChance:
-		try_move()
-		return
+		if try_move():
+			return
 
 	if is_axis_aligned_with_player(player) and has_line_of_sight_to(player):
 		if int(player.position.x) == int(position.x):
@@ -56,7 +56,6 @@ func has_line_of_sight_to(player: Node2D) -> bool:
 		
 	return false
 
-
 func shoot_at_player(x: float, y: float):
 	var dir = Vector2(x, y)
 	var pos = position + dir * Settings.tile_size
@@ -65,7 +64,7 @@ func shoot_at_player(x: float, y: float):
 	bullet.setup(dir, pos)
 	bullet.spawn_turn = false
 
-func try_move():
+func try_move() -> bool:
 	# Randomly decide direction
 	var x = 0
 	var y = 0
@@ -82,7 +81,8 @@ func try_move():
 
 	if collision:
 		# Hit a wall or enemy — cannot move
-		return
+		return false
 	
 	# Safe to move: use move_and_collide for actual movement
 	move_and_collide(motion)
+	return true
