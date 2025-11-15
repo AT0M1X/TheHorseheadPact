@@ -89,7 +89,7 @@ func process_bullets():
 		if is_instance_valid(b):
 			b.move()
 			if b.has_signal("move_done") :
-            	await b.move_done
+				await b.move_done
 				
 	for b in dead_bullets:
 		bullets.erase(b)
