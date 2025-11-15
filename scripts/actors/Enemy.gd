@@ -5,6 +5,7 @@ extends Node2D
 @onready var raycast: RayCast2D = $RayCast2D
 
 var player: Node2D
+var tile_size = Settings.tile_size
 
 func _ready():
 	TurnManager.register_enemy(self)
@@ -20,37 +21,25 @@ func take_turn():
 		if int(player.position.y) == int(position.y):
 			shoot_at_player(1 if player.position.x > position.x else -1, 0)
 
-func get_cell_pos(world_pos: Vector2) -> Vector2i:
-	return Vector2i(
-		int(round(world_pos.x / TILE_SIZE)),
-		int(round(world_pos.y / TILE_SIZE))
-	)
-
-
 func is_axis_aligned_with_player(player: Node2D) -> bool:
-	var my_cell     := get_cell_pos(global_position)
-	var player_cell := get_cell_pos(player.global_position)
-
-	return my_cell.x == player_cell.x or my_cell.y == player_cell.y
+	return position.x == player.position.x or position.y == player.position.y
 
 
 func has_line_of_sight_to(player: Node2D) -> bool:
-	#var my_cell     := get_cell_pos(global_position)
-	#var player_cell := get_cell_pos(player.global_position)
-	var my_cell = position
-	var player_cell = player.position
+	var my_pos = position
+	var player_pos = player.position
 
-	var dx_cells = player_cell.x - my_cell.x
-	var dy_cells = player_cell.y - my_cell.y
+	var dx = player_pos.x - my_pos.x
+	var dy = player_pos.y - my_pos.y
 
 	var cast_to: Vector2
 
-	if dx_cells == 0:
+	if dx == 0:
 		# same column → vertical cast
-		cast_to = Vector2(0, float(dy_cells))
-	elif dy_cells == 0:
+		cast_to = Vector2(0, float(dy))
+	elif dy == 0:
 		# same row → horizontal cast
-		cast_to = Vector2(float(dx_cells), 0)
+		cast_to = Vector2(float(dx), 0)
 	else:
 		# Not truly aligned; extra safety
 		return false
