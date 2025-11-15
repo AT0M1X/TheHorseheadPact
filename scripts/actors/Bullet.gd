@@ -17,7 +17,6 @@ func move():
 		spawn_turn = false
 		return
 		
-	check_collision()
 	if raycast.is_colliding():
 		var hit = raycast.get_collider()
 		if hit != TurnManager.player and !hit.is_in_group("enemies") and !hit.is_in_group("projectiles"):
