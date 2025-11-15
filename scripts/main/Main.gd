@@ -10,6 +10,7 @@ func _ready():
 	player = $Player
 	player.player_died.connect(_on_player_died)
 	load_level("res://scenes/levels/Level_01.tscn")
+	#load_level("res://scenes/levels/OpenTesting.tscn")
 
 func load_level(path):
 	if current_level_instance:

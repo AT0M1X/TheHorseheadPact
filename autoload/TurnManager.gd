@@ -51,8 +51,6 @@ func process_enemies():
 			return
 		if is_instance_valid(e):
 			e.take_turn()
-			await get_tree().physics_frame
-			await get_tree().process_frame
 
 func process_bullets():
 	for b in bullets:
@@ -60,8 +58,6 @@ func process_bullets():
 			return
 		if is_instance_valid(b):
 			b.move()
-			await get_tree().physics_frame
-			await get_tree().process_frame
 
 func player_die():
 	if game_over:
