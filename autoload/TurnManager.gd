@@ -15,8 +15,10 @@ signal deal_turn_happened
 
 func reset():
 	_enemies.clear()
+	bullets.clear()
 	state = "player"
 	game_over = false
+	current_turn = 0
 
 func register_player(p):
 	player = p
@@ -29,6 +31,7 @@ func kill_enemy(e):
 	_enemies.erase(e)
 	# Handle victory condition - just reloading for now
 	if _enemies.is_empty():
+		reset()
 		get_tree().reload_current_scene()
 		
 func register_bullet(b):
