@@ -6,9 +6,9 @@ var player
 
 func _ready():
 	TurnManager.reset()
+	TurnManager.player_died.connect(_on_player_died)
 	
 	player = $Player
-	player.player_died.connect(_on_player_died)
 	load_level("res://scenes/levels/Level_01.tscn")
 	#load_level("res://scenes/levels/OpenTesting.tscn")
 
@@ -23,6 +23,7 @@ func load_level(path):
 	# Optionally move player to the level's designated PlayerStart
 	var start = current_level_instance.get_node("PlayerStart")
 	player.position = start.position
+	TurnManager.do_turn()
 
 func restart_level():
 	TurnManager.reset()

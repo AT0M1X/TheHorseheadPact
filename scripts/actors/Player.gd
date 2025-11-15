@@ -3,16 +3,20 @@ extends CharacterBody2D
 @export var Bullet : PackedScene
 
 var tile_size = 32
-var is_my_turn := true
+var can_act := false
 var last_dir = Vector2.RIGHT
 
-signal player_died
+signal turn_done
 
 func _ready():
 	TurnManager.register_player(self)
+	DealManager.connect("forced_turn_action", force_move)
 
-func _input(event):
-	if not is_my_turn:
+func take_turn():
+	can_act = true
+
+func _unhandled_input(event):
+	if !can_act:
 		return
 
 	if event.is_action_pressed("shoot"):
@@ -66,8 +70,16 @@ func shoot(dir: Vector2):
 	end_turn()
 
 func end_turn():
-	is_my_turn = false
-	TurnManager.on_player_end_turn()
-	
-func die():
-	emit_signal("player_died")
+	can_act = false
+	emit_signal("turn_done")
+
+func force_move(deal_type: String):
+	match deal_type:
+		"move up":
+			try_move(Vector2.UP)
+		"move down":
+			try_move(Vector2.DOWN)
+		"move right":
+			try_move(Vector2.RIGHT)
+		"move left":
+			try_move(Vector2.LEFT)
