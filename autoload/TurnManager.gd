@@ -3,6 +3,7 @@ extends Node
 var player
 var _enemies := []
 var bullets := []
+var dead_bullets := []
 var state := "player" # "player" or "enemies"
 var game_over := false
 var current_turn = 0
@@ -63,15 +64,15 @@ func process_enemies():
 			e.take_turn()
 
 func process_bullets():
-	var dead_bullets := []
 	for b in bullets:
 		if game_over:
 			return
-		if is_instance_valid(b) and b.move():
-			dead_bullets.append(b)
+		if is_instance_valid(b):
+			b.move()
 				
 	for b in dead_bullets:
-		b.remove_bullet()
+		bullets.erase(b)
+	dead_bullets.clear()
 
 func player_die():
 	if game_over:
