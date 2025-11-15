@@ -7,7 +7,7 @@ var spawn_turn = true
 
 func setup(dir: Vector2, pos: Vector2):
 	direction = dir
-	raycast.target_position = direction * Settings.tile_size
+	rotation = direction.angle()
 	position = pos
 	TurnManager.register_bullet(self)
 	check_collision()
