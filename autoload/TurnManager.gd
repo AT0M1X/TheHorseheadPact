@@ -8,6 +8,7 @@ var bullets := []
 var dead_bullets := []
 var state := "player" # "player" or "enemies"
 var game_over := false
+var first_turn = false
 
 signal reset_signal
 signal start_turn(current_turn)
@@ -15,11 +16,16 @@ signal player_died
 signal update_finger_counter(fingers)
 signal update_turn_counter(current_turn)
 signal update_honse_counter()
+signal level_cleared
 
 func reset():
 	emit_signal("reset_signal")
 	game_over = false
 	current_turn = 0
+	for e in _enemies:
+		e.queue_free()
+	for b in bullets:
+		b.queue_free()
 	_enemies.clear()
 	bullets.clear()
 
@@ -35,7 +41,7 @@ func kill_enemy(e):
 	# Handle victory condition - just reloading for now
 	if _enemies.is_empty():
 		reset()
-		get_tree().reload_current_scene()
+		level_cleared.emit()
 		
 func register_bullet(b):
 	bullets.append(b)
@@ -52,9 +58,14 @@ func do_turn():
 	var is_forced_turn = DealManager.do_forced_turn(current_turn)
 	if is_forced_turn:
 		await DealManager.forced_turn_end
-	
+		
 	player.take_turn()
 	await player.turn_done
+	
+	if first_turn:
+		first_turn = false
+		end_turn()
+		return
 	
 	# Let player update before next entity turn
 	await get_tree().physics_frame
