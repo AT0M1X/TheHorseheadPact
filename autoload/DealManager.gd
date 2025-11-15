@@ -28,8 +28,8 @@ func reset_deals ():
 
 func do_deal_event_turn(turn_number):
 	if (!dealAccepted && (turn_number % deal_turn_modifier + randi_range(-2,2) == 0)):
-		dealEventHappened.emit()
 		pick_deal()
+		dealEventHappened.emit()
 		return true
 	else:
 		false
