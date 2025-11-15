@@ -8,6 +8,7 @@ var tile_size = Settings.tile_size
 
 func _ready():
 	TurnManager.register_enemy(self)
+	DealManager.deal.connect(shoot_at_player(1,1))
 
 func take_turn():
 	var player = TurnManager.player
