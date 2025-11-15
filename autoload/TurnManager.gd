@@ -5,11 +5,13 @@ var enemies := []
 var bullets := []
 var state := "player" # "player" or "enemies"
 var game_over := false
-var currentTurn = 0
-var dealTurnModifier = 5
+var current_turn = 0
+var deal_turn_modifier = 5
 
-var unusedDealList := []
-var usedDealList := []
+var unused_deal_list := []
+var used_deal_list := []
+
+signal deal_turn_happened
 
 func reset():
 	enemies.clear()
@@ -29,12 +31,6 @@ func on_player_end_turn():
 	if game_over:
 		return
 	
-	if(state == "player"):
-		state = "enemies"
-		
-		next_turn()
-		process_bullets()
-		process_enemies()
 	# Let player update before next entity turn
 	await get_tree().physics_frame
 	await get_tree().process_frame
@@ -73,12 +69,12 @@ func player_die():
 func process_deal_turn():
 	state = "deal"
 	print("horse")
-	emit_signal("dealTurnHappened")
+	emit_signal("deal_turn_happened")
 	state = "enemy"
 
 func next_turn():
-	currentTurn += 1
-	if (currentTurn % (dealTurnModifier + randi_range(-2,2)) == 0):
+	current_turn += 1
+	if (current_turn % (deal_turn_modifier + randi_range(-2,2)) == 0):
 		process_deal_turn()
 		
 func pick_deal ():
