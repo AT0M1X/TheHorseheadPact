@@ -77,9 +77,17 @@ func force_move(deal_type: String):
 	match deal_type:
 		"move up":
 			try_move(Vector2.UP)
+			print(deal_type)
+			DealManager.forced_turn_completed()
 		"move down":
 			try_move(Vector2.DOWN)
+			print(deal_type)
+			DealManager.forced_turn_completed()
 		"move right":
 			try_move(Vector2.RIGHT)
+			print(deal_type)
+			DealManager.forced_turn_completed()
 		"move left":
 			try_move(Vector2.LEFT)
+			print(deal_type)
+			DealManager.forced_turn_completed()
