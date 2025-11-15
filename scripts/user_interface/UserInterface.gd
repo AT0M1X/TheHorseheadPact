@@ -34,8 +34,7 @@ func _ready():
 	
 func _update_finger_counter(finger_count):
 	_set_icon_by_index(5 - finger_count)
-	audio.stream = sound_break_finger
-	audio.play()
+	_play_audio(sound_break_finger)
 	
 func _update_turn_counter(current_turn):
 	turn_counter.text = "Round: %s" % current_turn
@@ -57,8 +56,7 @@ func _show_deal():
 	deal.visible = true
 	accept_button.visible = true
 	decline_button.visible = true
-	audio.stream = sound_deal
-	audio.play()
+	_play_audio(sound_deal)
 
 func _hide_deal():
 	deal.visible = false
@@ -67,11 +65,14 @@ func _hide_deal():
 	
 func _on_accept_deal_pressed() -> void:
 	DealManager.deal_accepted()
-	audio.stream = sound_accept
-	audio.play()
+	_play_audio(sound_accept)
 	_hide_deal()
 
 func _on_decline_deal_pressed() -> void:
 	DealManager.deal_declined()
 	_hide_deal()
 	
+func _play_audio(audio_stream):
+	#audio.pitch_scale = randf_range(0.9, 1.1)
+	audio.stream = audio_stream
+	audio.play()
