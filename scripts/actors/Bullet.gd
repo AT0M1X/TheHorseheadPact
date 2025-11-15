@@ -27,7 +27,7 @@ func move():
 	check_collision(false)
 
 func check_collision(pre_check: bool):
-	if !get_tree(): return
+	if get_tree() == null: return
 	var bodies = get_tree().get_nodes_in_group("enemies")
 	
 	if !pre_check:
