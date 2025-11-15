@@ -10,6 +10,9 @@ var game_over := false
 signal reset_signal
 signal start_turn(current_turn)
 signal player_died
+signal update_finger_counter(fingers)
+signal update_turn_counter(current_turn)
+signal update_honse_counter()
 
 func reset():
 	emit_signal("reset_signal")
@@ -42,21 +45,29 @@ func do_turn():
 	emit_signal("start_turn", current_turn) 
 	var is_deal_event_turn = DealManager.do_deal_event_turn(current_turn)
 	if is_deal_event_turn:
-		await DealManager.deal_event_happened
+		await DealManager.deal_event_end
 	
 	var is_forced_turn = DealManager.do_forced_turn(current_turn)
-	if is_forced_turn:
-		await DealManager.forced_turn_happened
+#	if is_forced_turn:
+#		await DealManager.forced_turn_end
 	
 	player.take_turn()
 	await player.turn_done
-	await process_enemies()
+	
+	# Let player update before next entity turn
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	
 	await process_bullets()
+	await process_enemies()
+
 	
 	end_turn()
 
 func end_turn():
 	current_turn += 1
+	emit_to_ui()
+	
 	if !game_over:
 		call_deferred("do_turn")
 
@@ -84,3 +95,11 @@ func player_die():
 	
 	game_over = true
 	emit_signal("player_died")
+	
+func emit_to_ui():
+	update_turn_counter.emit(current_turn)
+	
+	if DealManager.next_forced_turn:
+		var turns_to_forced = DealManager.next_forced_turn - current_turn
+		update_honse_counter.emit(turns_to_forced)
+	
