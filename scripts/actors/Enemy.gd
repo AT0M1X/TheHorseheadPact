@@ -1,10 +1,12 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var Bullet : PackedScene
+@export_range(0, 1, 0.05) var MoveChance : float = 0.8
 
 @onready var raycast: RayCast2D = $RayCast2D
 
 var tile_size = Settings.tile_size
+var move_right = true
 
 func _ready():
 	TurnManager.register_enemy(self)
@@ -14,6 +16,10 @@ func take_turn():
 	var player = TurnManager.player
 	if player == null:
 		return
+
+	if randf() > MoveChance:
+		if try_move():
+			return
 
 	if is_axis_aligned_with_player(player) and has_line_of_sight_to(player):
 		if int(player.position.x) == int(position.x):
@@ -51,7 +57,6 @@ func has_line_of_sight_to(player: Node2D) -> bool:
 		
 	return false
 
-
 func shoot_at_player(x: float, y: float):
 	var dir = Vector2(x, y)
 	var pos = position + dir * Settings.tile_size
@@ -59,3 +64,26 @@ func shoot_at_player(x: float, y: float):
 	owner.add_child(bullet)
 	bullet.setup(dir, pos)
 	bullet.spawn_turn = false
+
+func try_move() -> bool:
+	# Randomly decide direction
+	var x = 0
+	var y = 0
+	if randi() % 2:
+		y = (randi() % 2) * 2 - 1
+	else:
+		x = (randi() % 2) * 2 - 1
+		
+	var direction = Vector2(x, y)
+	var motion = direction * Settings.tile_size
+
+	# Use move_and_collide to check BEFORE moving
+	var collision = move_and_collide(motion, true)
+
+	if collision:
+		# Hit a wall or enemy — cannot move
+		return false
+	
+	# Safe to move: use move_and_collide for actual movement
+	move_and_collide(motion)
+	return true

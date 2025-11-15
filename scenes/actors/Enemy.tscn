@@ -1,15 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://54bo78tq7xld"]
+[gd_scene load_steps=5 format=3 uid="uid://54bo78tq7xld"]
 
 [ext_resource type="Script" uid="uid://bany8gr5f2ndn" path="res://scripts/actors/Enemy.gd" id="1_ay0ne"]
-[ext_resource type="Texture2D" uid="uid://dnyrknhehe1ap" path="res://assets/art/EnemyPrototype_32x32.png" id="2_ktxhy"]
 [ext_resource type="PackedScene" uid="uid://b3kh35nbu4ok0" path="res://scenes/actors/Bullet.tscn" id="2_qqu5c"]
+[ext_resource type="Texture2D" uid="uid://b1qbwl1kfrrwh" path="res://assets/art/penguin_goon.png" id="3_ktxhy"]
 
-[node name="Enemy" type="Node2D" groups=["enemies"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxhy"]
+size = Vector2(500, 500)
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 script = ExtResource("1_ay0ne")
 Bullet = ExtResource("2_qqu5c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_ktxhy")
+position = Vector2(21, 3)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_ktxhy")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 collide_with_areas = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ktxhy")

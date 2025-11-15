@@ -26,7 +26,8 @@ func load_level(path):
 
 func restart_level():
 	TurnManager.reset()
-	load_level(current_level_scene.resource_path)
+	#load_level(current_level_scene.resource_path)
+	get_tree().reload_current_scene()
 	
 func _on_player_died():
 	restart_level()
