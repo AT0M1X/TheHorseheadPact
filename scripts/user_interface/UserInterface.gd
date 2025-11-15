@@ -7,6 +7,12 @@ extends CanvasLayer
 @onready var decline_button: Button = $"UI Root/Deal/Decline Deal"
 @onready var deal: TextureRect = $"UI Root/Deal"
 
+@onready var audio = $Audio
+
+var sound_break_finger = preload("res://assets/sound/av.wav")
+var sound_deal = preload("res://assets/sound/What do you say.wav")
+var sound_accept = preload("res://assets/sound/vrinsk.wav")
+
 var fingers := [
 	preload("res://assets/art/0_-_Full_hand.png"),
 	preload("res://assets/art/1_-_Missing_littlefinger.png"),
@@ -26,6 +32,8 @@ func _ready():
 	
 func _update_finger_counter(finger_count):
 	_set_icon_by_index(5 - finger_count)
+	audio.stream = sound_break_finger
+	audio.play()
 	
 func _update_turn_counter(current_turn):
 	turn_counter.text = "Round: %s" % current_turn
@@ -41,6 +49,8 @@ func _show_deal():
 	deal.visible = true
 	accept_button.visible = true
 	decline_button.visible = true
+	audio.stream = sound_deal
+	audio.play()
 
 func _hide_deal():
 	deal.visible = false
@@ -49,6 +59,8 @@ func _hide_deal():
 	
 func _on_accept_deal_pressed() -> void:
 	DealManager.deal_accepted()
+	audio.stream = sound_accept
+	audio.play()
 	_hide_deal()
 
 func _on_decline_deal_pressed() -> void:

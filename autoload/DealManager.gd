@@ -17,7 +17,7 @@ signal forced_turn_end
 signal forced_turn_action(action: String)
 
 func pick_deal():
-	current_deal = deal_list[deal_to_pick+randi_range(-1,1)]
+	current_deal = deal_list[deal_to_pick]
 	deal_to_pick += 1
 	reset_deals()
 
