@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var Bullet : PackedScene
 
@@ -16,8 +16,17 @@ func _input(event):
 		return
 
 	if event.is_action_pressed("shoot"):
-		shoot()
+		shoot(Vector2.ZERO)
 		return
+		
+	if event.is_action_pressed("shoot_up"):
+		shoot(Vector2.UP)
+	elif event.is_action_pressed("shoot_right"):
+		shoot(Vector2.RIGHT)
+	elif event.is_action_pressed("shoot_left"):
+		shoot(Vector2.LEFT)
+	elif event.is_action_pressed("shoot_down"):
+		shoot(Vector2.DOWN)
 
 	if event.is_action_pressed("move_right"):
 		try_move(Vector2.RIGHT)
@@ -29,26 +38,31 @@ func _input(event):
 		try_move(Vector2.DOWN)
 
 func try_move(dir: Vector2):
-	var target_pos = position + dir * tile_size
-	# TODO: check collision / walls before moving
-	position = target_pos
+	if dir == Vector2.ZERO:
+		return
+		
+	last_dir = dir
+	var motion = dir * Settings.tile_size
+
+	# Use move_and_collide to check BEFORE moving
+	var collision = move_and_collide(motion, true)
+
+	if collision:
+		# Hit a wall or enemy — cannot move
+		return
+	
+	# Safe to move: use move_and_collide for actual movement
+	move_and_collide(motion)
 	end_turn()
 	
-func shoot():
-	var pos = position + last_dir * tile_size
+func shoot(dir: Vector2):
+	if dir != Vector2.ZERO:
+		last_dir = dir
+	var pos = position + last_dir * Settings.tile_size
 	var bullet = Bullet.instantiate()
 	owner.add_child(bullet)
 	bullet.setup(last_dir, pos)
 	
-	#for i in range(1, 20):
-		#pos += last_dir * tile_size
-		## Check if there is an enemy at pos (you can use groups or an Area2D)
-		#var bodies = get_tree().get_nodes_in_group("enemies")
-		#for e in bodies:
-			#if e.position == pos:
-				#e.queue_free()
-				#TurnManager.enemies.erase(e)
-				#break
 	end_turn()
 
 func end_turn():

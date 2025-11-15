@@ -10,6 +10,7 @@ func _ready():
 	player = $Player
 	player.player_died.connect(_on_player_died)
 	load_level("res://scenes/levels/Level_01.tscn")
+	#load_level("res://scenes/levels/OpenTesting.tscn")
 
 func load_level(path):
 	if current_level_instance:
@@ -25,7 +26,8 @@ func load_level(path):
 
 func restart_level():
 	TurnManager.reset()
-	load_level(current_level_scene.resource_path)
+	#load_level(current_level_scene.resource_path)
+	get_tree().reload_current_scene()
 	
 func _on_player_died():
 	restart_level()
