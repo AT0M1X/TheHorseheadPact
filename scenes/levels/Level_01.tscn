@@ -15,9 +15,11 @@ resource_name = "Wall"
 texture = ExtResource("2_wee7o")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [sub_resource type="TileSet" id="TileSet_ko0rf"]
 tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_1rhdn")
 sources/1 = SubResource("TileSetAtlasSource_sjxhf")
 

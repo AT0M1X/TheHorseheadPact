@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var Bullet : PackedScene
 
@@ -29,9 +29,20 @@ func _input(event):
 		try_move(Vector2.DOWN)
 
 func try_move(dir: Vector2):
-	var target_pos = position + dir * tile_size
-	# TODO: check collision / walls before moving
-	position = target_pos
+	if dir == Vector2.ZERO:
+		return
+
+	var motion = dir * tile_size
+
+	# Use move_and_collide to check BEFORE moving
+	var collision = move_and_collide(motion, true)
+
+	if collision:
+		# Hit a wall or enemy — cannot move
+		return
+
+	# Safe to move: use move_and_collide for actual movement
+	move_and_collide(motion)
 	end_turn()
 	
 func shoot():
