@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://6dl6r28p70da" path="res://scenes/actors/Player.tscn" id="3_dc040"]
 
 [node name="Main" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_u1xfj")
 
 [node name="LevelContainer" type="Node2D" parent="."]
