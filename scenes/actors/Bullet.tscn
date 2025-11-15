@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://b3qiraiig6ga4" path="res://scripts/actors/Bullet.gd" id="2_jad0o"]
 
 [node name="Bullet" type="Node2D"]
+script = ExtResource("2_jad0o")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_13uct")
-script = ExtResource("2_jad0o")
