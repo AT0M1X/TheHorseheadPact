@@ -10,7 +10,6 @@ var move_right = true
 
 func _ready():
 	TurnManager.register_enemy(self)
-	DealManager.deal.connect(shoot_at_player(1,1))
 
 func take_turn():
 	var player = TurnManager.player

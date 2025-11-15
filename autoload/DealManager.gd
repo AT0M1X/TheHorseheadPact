@@ -14,16 +14,13 @@ signal dealEventAccepted
 signal dealEventDeclined
 signal deal
 
-func _ready():
-	TurnManager.dealTurnHappened.connect(pick_deal)
-
 func pick_deal ():
 	currentDeal = dealList[dealToPick]
 	dealToPick =+ 1
 	reset_deals()
 
 func reset_deals ():
-	if(dealToPick == dealList.length):
+	if(dealToPick == dealList.size()):
 		dealToPick = 0
 
 func do_deal_event_turn(turn_number):

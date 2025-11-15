@@ -87,5 +87,4 @@ func process_deal_turn():
 
 func next_turn():
 	current_turn += 1
-	if (current_turn % (deal_turn_modifier + randi_range(-2,2)) == 0):
-		process_deal_turn()
+	DealManager.do_deal_event_turn(current_turn)
