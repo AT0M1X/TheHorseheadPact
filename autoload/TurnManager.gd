@@ -1,7 +1,7 @@
 extends Node
 
 var player
-var enemies := []
+var _enemies := []
 var bullets := []
 var state := "player" # "player" or "enemies"
 var game_over := false
@@ -14,7 +14,7 @@ var used_deal_list := []
 signal deal_turn_happened
 
 func reset():
-	enemies.clear()
+	_enemies.clear()
 	state = "player"
 	game_over = false
 
@@ -22,8 +22,15 @@ func register_player(p):
 	player = p
 
 func register_enemy(e):
-	enemies.append(e)
+	_enemies.append(e)
 	
+func kill_enemy(e):
+	e.queue_free()
+	_enemies.erase(e)
+	# Handle victory condition - just reloading for now
+	if _enemies.is_empty():
+		get_tree().reload_current_scene()
+		
 func register_bullet(b):
 	bullets.append(b)
 
@@ -46,7 +53,7 @@ func on_player_end_turn():
 		player.is_my_turn = true
 
 func process_enemies():
-	for e in enemies:
+	for e in _enemies:
 		if game_over:
 			return
 		if is_instance_valid(e):

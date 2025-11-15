@@ -32,8 +32,7 @@ func check_collision():
 		if e.position == position:
 			queue_free()
 			TurnManager.bullets.erase(self)
-			e.queue_free()
-			TurnManager.enemies.erase(e)
+			TurnManager.kill_enemy(e)
 			break
 	
 	if TurnManager.player:
