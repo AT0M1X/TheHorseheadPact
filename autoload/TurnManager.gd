@@ -16,6 +16,9 @@ func register_player(p):
 
 func register_enemy(e):
 	enemies.append(e)
+	
+func register_bullet(b):
+	bullets.append(b)
 
 func on_player_end_turn():
 	if game_over:

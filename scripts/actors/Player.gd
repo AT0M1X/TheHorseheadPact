@@ -38,8 +38,7 @@ func shoot():
 	var pos = position + last_dir * tile_size
 	var bullet = Bullet.instantiate()
 	owner.add_child(bullet)
-	bullet.position = pos
-	#bullet.set_direction(last_dir)
+	bullet.setup(last_dir, pos)
 	
 	#for i in range(1, 20):
 		#pos += last_dir * tile_size
