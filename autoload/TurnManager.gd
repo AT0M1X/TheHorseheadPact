@@ -85,12 +85,10 @@ func process_bullets():
 	for b in bullets:
 		if game_over:
 			return
-		if is_instance_valid(b):
-			b.move()
-			if b.has_signal("move_done"):
-				await b.move_done
 		if is_instance_valid(b) and b.move():
 			dead_bullets.append(b)
+			if b.has_signal("move_done") :
+				await b.move_done
 				
 	for b in dead_bullets:
 		b.remove_bullet()
