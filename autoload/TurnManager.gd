@@ -48,8 +48,8 @@ func do_turn():
 		await DealManager.deal_event_end
 	
 	var is_forced_turn = DealManager.do_forced_turn(current_turn)
-#	if is_forced_turn:
-#		await DealManager.forced_turn_end
+	if is_forced_turn:
+		await DealManager.forced_turn_end
 	
 	player.take_turn()
 	await player.turn_done

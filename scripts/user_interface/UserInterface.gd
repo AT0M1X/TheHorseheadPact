@@ -3,8 +3,9 @@ extends CanvasLayer
 @onready var finger_counter: TextureRect = $"UI Root/Finger Counter"
 @onready var turn_counter: Label = $"UI Root/Turn Counter"
 @onready var honse_counter: Label = $"UI Root/Honse Counter"
-@onready var accept_button: Button = $"UI Root/Accept Deal"
-@onready var decline_button: Button = $"UI Root/Decline Deal"
+@onready var accept_button: Button = $"UI Root/Deal/Accept Deal"
+@onready var decline_button: Button = $"UI Root/Deal/Decline Deal"
+@onready var deal: TextureRect = $"UI Root/Deal"
 
 var fingers := [
 	preload("res://assets/art/0_-_Full_hand.png"),
@@ -16,8 +17,7 @@ var fingers := [
 ]
 
 func _ready():
-	accept_button.visible = false
-	decline_button.visible = false
+	_hide_deal()
 	
 	TurnManager.connect("update_finger_counter", _update_finger_counter)
 	TurnManager.connect("update_turn_counter", _update_turn_counter)
@@ -38,10 +38,12 @@ func _set_icon_by_index(index):
 		finger_counter.texture = fingers[index]
 
 func _show_deal():
+	deal.visible = true
 	accept_button.visible = true
 	decline_button.visible = true
 
 func _hide_deal():
+	deal.visible = false
 	accept_button.visible = false
 	decline_button.visible = false
 	

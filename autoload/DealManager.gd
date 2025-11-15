@@ -59,4 +59,4 @@ func deal_declined():
 	TurnManager.update_finger_counter.emit(fingers)
 
 func forced_turn_completed():
-	forced_turn_end.emit()
+	call_deferred("emit_signal", "forced_turn_end")
