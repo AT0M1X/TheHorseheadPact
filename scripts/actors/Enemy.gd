@@ -4,6 +4,8 @@ extends Node2D
 
 @onready var raycast: RayCast2D = $RayCast2D
 
+var tile_size = Settings.tile_size
+
 func _ready():
 	TurnManager.register_enemy(self)
 
@@ -18,18 +20,8 @@ func take_turn():
 		if int(player.position.y) == int(position.y):
 			shoot_at_player(1 if player.position.x > position.x else -1, 0)
 
-func get_cell_pos(world_pos: Vector2) -> Vector2i:
-	return Vector2i(
-		int(round(world_pos.x / Settings.tile_size)),
-		int(round(world_pos.y / Settings.tile_size))
-	)
-
-
 func is_axis_aligned_with_player(player: Node2D) -> bool:
-	var my_cell     := get_cell_pos(global_position)
-	var player_cell := get_cell_pos(player.global_position)
-
-	return my_cell.x == player_cell.x or my_cell.y == player_cell.y
+	return position.x == player.position.x or position.y == player.position.y
 
 
 func has_line_of_sight_to(player: Node2D) -> bool:
