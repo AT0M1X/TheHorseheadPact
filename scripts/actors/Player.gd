@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var Bullet : PackedScene
+
 var tile_size = 32
 var is_my_turn := true
 var last_dir = Vector2.RIGHT
@@ -33,16 +35,21 @@ func try_move(dir: Vector2):
 	end_turn()
 	
 func shoot():
-	var pos = position
-	for i in range(1, 20):
-		pos += last_dir * tile_size
-		# Check if there is an enemy at pos (you can use groups or an Area2D)
-		var bodies = get_tree().get_nodes_in_group("enemies")
-		for e in bodies:
-			if e.position == pos:
-				e.queue_free()
-				TurnManager.enemies.erase(e)
-				break
+	var pos = position + last_dir * tile_size
+	var bullet = Bullet.instantiate()
+	owner.add_child(bullet)
+	bullet.position = pos
+	#bullet.set_direction(last_dir)
+	
+	#for i in range(1, 20):
+		#pos += last_dir * tile_size
+		## Check if there is an enemy at pos (you can use groups or an Area2D)
+		#var bodies = get_tree().get_nodes_in_group("enemies")
+		#for e in bodies:
+			#if e.position == pos:
+				#e.queue_free()
+				#TurnManager.enemies.erase(e)
+				#break
 	end_turn()
 
 func end_turn():
