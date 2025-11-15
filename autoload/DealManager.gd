@@ -17,11 +17,13 @@ signal deal
 func pick_deal ():
 	currentDeal = dealList[dealToPick]
 	dealToPick =+ 1
+	print(currentDeal)
 	reset_deals()
 
 func reset_deals ():
 	if(dealToPick == dealList.size()):
 		dealToPick = 0
+		print()
 
 func do_deal_event_turn(turn_number):
 	if (!dealAccepted && (turn_number % deal_turn_modifier + randi_range(-2,2) == 0)):

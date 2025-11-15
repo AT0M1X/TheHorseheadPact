@@ -41,8 +41,7 @@ func on_player_end_turn():
 		state = "enemies"
 		
 		next_turn()
-		process_bullets()
-		process_enemies()
+
 		
 	# Let player update before next entity turn
 	await get_tree().physics_frame
@@ -79,12 +78,7 @@ func player_die():
 	game_over = true
 	player.die()
 
-func process_deal_turn():
-	state = "deal"
-	print("horse")
-	dealTurnHappened.emit()
-	state = "enemy"
-
 func next_turn():
 	current_turn += 1
 	DealManager.do_deal_event_turn(current_turn)
+	DealManager.do_forced_turn(current_turn)
