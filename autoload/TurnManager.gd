@@ -63,11 +63,15 @@ func process_enemies():
 			e.take_turn()
 
 func process_bullets():
+	var dead_bullets := []
 	for b in bullets:
 		if game_over:
 			return
-		if is_instance_valid(b):
-			b.move()
+		if is_instance_valid(b) and b.move():
+			dead_bullets.append(b)
+				
+	for b in dead_bullets:
+		b.remove_bullet()
 
 func player_die():
 	if game_over:
