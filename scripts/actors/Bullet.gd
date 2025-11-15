@@ -12,6 +12,16 @@ func setup(dir: Vector2, pos: Vector2):
 	TurnManager.register_bullet(self)
 	check_collision(false)
 	spawn_turn = true
+	
+	var point = PhysicsPointQueryParameters2D.new()
+	point.position = position
+	var space_state = get_world_2d().direct_space_state
+	var result = space_state.intersect_point(point)
+	for r in result:
+		var  obj = r["collider"]
+		if obj is TileMapLayer:
+			remove_bullet()
+			return
 
 func move():
 	if spawn_turn:
@@ -22,7 +32,7 @@ func move():
 	
 	if raycast.is_colliding():
 		var hit = raycast.get_collider()
-		if hit != TurnManager.player and !hit.is_in_group("enemies") and !hit.is_in_group("projectiles"):
+		if hit is TileMapLayer:
 			remove_bullet()
 			return
 

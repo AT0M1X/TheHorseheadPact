@@ -62,16 +62,18 @@ func do_turn():
 	player.take_turn()
 	await player.turn_done
 	
-	if first_turn:
-		first_turn = false
-		end_turn()
-		return
-	
 	# Let player update before next entity turn
 	await get_tree().physics_frame
 	await get_tree().process_frame
 	
 	await process_bullets()
+	
+	# Prevent enemies from taking a turn when we change / reload a level
+	if first_turn:
+		first_turn = false
+		end_turn()
+		return
+		
 	await process_enemies()
 
 	

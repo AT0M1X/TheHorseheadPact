@@ -41,7 +41,10 @@ func _update_turn_counter(current_turn):
 	turn_counter.text = "Round: %s" % current_turn
 	
 func _update_honse_counter(turns_to_forced):
-	honse_counter.text = "Honse Turn In: %s" % turns_to_forced
+	if turns_to_forced >= 0:
+		honse_counter.text = "Honse Turn In: %s" % turns_to_forced
+	else:
+		honse_counter.text = "Honse Turn In: ?"
 	
 func _update_honse_action(action):
 	honse_action.text = "%s" % action
