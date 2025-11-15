@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://6dl6r28p70da"]
+[gd_scene load_steps=6 format=3 uid="uid://6dl6r28p70da"]
 
 [ext_resource type="Script" uid="uid://buqr5bwpg74tu" path="res://scripts/actors/Player.gd" id="1_8iu4y"]
 [ext_resource type="PackedScene" uid="uid://b3kh35nbu4ok0" path="res://scenes/actors/Bullet.tscn" id="2_df4lg"]
 [ext_resource type="Texture2D" uid="uid://ei3yhsgu7y5f" path="res://assets/art/Horse_Player.png" id="3_df4lg"]
+[ext_resource type="AudioStream" uid="uid://ctwjhxalkmj27" path="res://assets/sound/Walk_HorseClop.wav" id="3_vtocr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_df4lg"]
 size = Vector2(500, 500)
@@ -17,3 +18,8 @@ texture = ExtResource("3_df4lg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_df4lg")
+
+[node name="PlayerAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_vtocr")
+max_distance = 1e+07
+attenuation = 1e-05

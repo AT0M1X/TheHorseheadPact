@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
 @export var Bullet : PackedScene
+@export var Pitch_Variance = 0.2
+@onready var audio = $PlayerAudio
 
 var tile_size = 32
 var can_act := false
@@ -56,6 +58,8 @@ func try_move(dir: Vector2):
 		return
 	
 	# Safe to move: use move_and_collide for actual movement
+	audio.pitch_scale = randf_range(1 - Pitch_Variance, 1 + Pitch_Variance)
+	audio.play()
 	move_and_collide(motion)
 	end_turn()
 	
