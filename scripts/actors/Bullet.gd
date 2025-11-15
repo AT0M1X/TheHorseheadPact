@@ -21,8 +21,7 @@ func move():
 	if raycast.is_colliding():
 		var hit = raycast.get_collider()
 		if hit != TurnManager.player and !hit.is_in_group("enemies") and !hit.is_in_group("projectiles"):
-			queue_free()
-			TurnManager.bullets.erase(self)
+			remove_bullet()
 		
 	position += direction * Settings.tile_size
 	check_collision(false)
