@@ -37,6 +37,7 @@ func do_deal_event_turn(turn_number):
 func do_forced_turn(turn_number):
 	if (turn_number == nextForcedTurn):
 		deal.emit(currentDeal)
+		print(currentDeal)
 		forcedTurnHappened.emit()
 		dealAccepted = false
 		return true
