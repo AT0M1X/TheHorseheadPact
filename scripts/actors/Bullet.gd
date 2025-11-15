@@ -1,7 +1,6 @@
 extends Node2D
 
 var direction = Vector2.RIGHT
-var tile_size = 32
 var spawn_turn = true
 
 func setup(dir: Vector2, pos: Vector2):
@@ -15,7 +14,7 @@ func move():
 		spawn_turn = false
 		return
 		
-	position += direction * tile_size
+	position += direction * Settings.tile_size
 	check_collision()
 
 func check_collision():

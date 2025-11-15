@@ -2,7 +2,6 @@ extends Node2D
 
 @export var Bullet : PackedScene
 
-var tile_size = 32
 var is_my_turn := true
 var last_dir = Vector2.RIGHT
 
@@ -29,13 +28,13 @@ func _input(event):
 		try_move(Vector2.DOWN)
 
 func try_move(dir: Vector2):
-	var target_pos = position + dir * tile_size
+	var target_pos = position + dir * Settings.tile_size
 	# TODO: check collision / walls before moving
 	position = target_pos
 	end_turn()
 	
 func shoot():
-	var pos = position + last_dir * tile_size
+	var pos = position + last_dir * Settings.tile_size
 	var bullet = Bullet.instantiate()
 	owner.add_child(bullet)
 	bullet.setup(last_dir, pos)

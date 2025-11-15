@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 TurnManager="*res://autoload/TurnManager.gd"
+Settings="*res://autoload/Settings.gd"
 
 [global_group]
 
