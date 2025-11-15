@@ -7,12 +7,14 @@ extends CharacterBody2D
 
 var tile_size = Settings.tile_size
 var move_right = true
+var player
 
 func _ready():
 	TurnManager.register_enemy(self)
+	DealManager.connect("forced_turn_action", deal_enemy_action)
 
 func take_turn():
-	var player = TurnManager.player
+	player = TurnManager.player
 	if player == null:
 		return
 
@@ -86,3 +88,13 @@ func try_move() -> bool:
 	# Safe to move: use move_and_collide for actual movement
 	move_and_collide(motion)
 	return true
+	
+func deal_enemy_action(deal_type: String):
+	match deal_type:
+		"All shoot":
+			print(deal_type)
+			if int(player.position.x) == int(position.x):
+				shoot_at_player(0, 1 if player.position.y > position.y else -1)
+			if int(player.position.y) == int(position.y):
+				shoot_at_player(1 if player.position.x > position.x else -1, 0)
+			DealManager.forced_turn_completed()
