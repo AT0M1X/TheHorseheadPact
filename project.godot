@@ -23,6 +23,7 @@ Settings="*res://autoload/Settings.gd"
 [global_group]
 
 enemies=""
+projectile=""
 
 [input]
 

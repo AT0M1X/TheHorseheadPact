@@ -1,10 +1,13 @@
 extends Node2D
 
+@onready var raycast: RayCast2D = $RayCast2D
+
 var direction = Vector2.RIGHT
 var spawn_turn = true
 
 func setup(dir: Vector2, pos: Vector2):
 	direction = dir
+	raycast.target_position = direction * Settings.tile_size
 	position = pos
 	TurnManager.register_bullet(self)
 	check_collision()
@@ -13,6 +16,13 @@ func move():
 	if spawn_turn:
 		spawn_turn = false
 		return
+		
+	check_collision()
+	if raycast.is_colliding():
+		var hit = raycast.get_collider()
+		if hit != TurnManager.player and !hit.is_in_group("enemies") and !hit.is_in_group("projectiles"):
+			queue_free()
+			TurnManager.bullets.erase(self)
 		
 	position += direction * Settings.tile_size
 	check_collision()
