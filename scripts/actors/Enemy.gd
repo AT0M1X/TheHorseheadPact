@@ -2,18 +2,69 @@ extends Node2D
 
 @export var Bullet : PackedScene
 
+@onready var raycast: RayCast2D = $RayCast2D
+
+var player: Node2D
+
 func _ready():
 	TurnManager.register_enemy(self)
 
 func take_turn():
-	# Dumb behavior: if player in same row/column, "shoot"
-	if TurnManager.player:
-		var p = TurnManager.player
-		if int(p.position.x) == int(position.x):
-			shoot_at_player(0, 1 if p.position.y > position.y else -1)
-		if int(p.position.y) == int(position.y):
-			shoot_at_player(1 if p.position.x > position.x else -1, 0)
-	# Enemy turn ends automatically after all enemies act
+	player = TurnManager.player
+	if player == null:
+		return
+
+	if is_axis_aligned_with_player(player) and has_line_of_sight_to(player):
+		if int(player.position.x) == int(position.x):
+			shoot_at_player(0, 1 if player.position.y > position.y else -1)
+		if int(player.position.y) == int(position.y):
+			shoot_at_player(1 if player.position.x > position.x else -1, 0)
+
+func get_cell_pos(world_pos: Vector2) -> Vector2i:
+	return Vector2i(
+		int(round(world_pos.x / TILE_SIZE)),
+		int(round(world_pos.y / TILE_SIZE))
+	)
+
+
+func is_axis_aligned_with_player(player: Node2D) -> bool:
+	var my_cell     := get_cell_pos(global_position)
+	var player_cell := get_cell_pos(player.global_position)
+
+	return my_cell.x == player_cell.x or my_cell.y == player_cell.y
+
+
+func has_line_of_sight_to(player: Node2D) -> bool:
+	#var my_cell     := get_cell_pos(global_position)
+	#var player_cell := get_cell_pos(player.global_position)
+	var my_cell = position
+	var player_cell = player.position
+
+	var dx_cells = player_cell.x - my_cell.x
+	var dy_cells = player_cell.y - my_cell.y
+
+	var cast_to: Vector2
+
+	if dx_cells == 0:
+		# same column → vertical cast
+		cast_to = Vector2(0, float(dy_cells))
+	elif dy_cells == 0:
+		# same row → horizontal cast
+		cast_to = Vector2(float(dx_cells), 0)
+	else:
+		# Not truly aligned; extra safety
+		return false
+
+	# RayCast2D target position is local to the raycast node
+	raycast.target_position = cast_to
+	raycast.force_raycast_update()
+	
+	if raycast.is_colliding():
+		var hit = raycast.get_collider()
+		return hit == player
+		
+	return false
+
 
 func shoot_at_player(x: float, y: float):
 	var dir = Vector2(x, y)

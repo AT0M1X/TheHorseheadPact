@@ -10,3 +10,6 @@ Bullet = ExtResource("2_qqu5c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_ktxhy")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+collide_with_areas = true
