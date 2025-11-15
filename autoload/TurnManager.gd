@@ -20,10 +20,20 @@ func register_enemy(e):
 func on_player_end_turn():
 	if game_over:
 		return
-		
+	
+	# Let player update before next entity turn
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	
 	state = "enemies"
 	process_bullets()
+	if game_over:
+		return
 	process_enemies()
+	
+	state = "player"
+	if is_instance_valid(player):
+		player.is_my_turn = true
 
 func process_enemies():
 	for e in enemies:
@@ -31,10 +41,8 @@ func process_enemies():
 			return
 		if is_instance_valid(e):
 			e.take_turn()
-	
-	state = "player"
-	if is_instance_valid(player):
-		player.is_my_turn = true
+			await get_tree().physics_frame
+			await get_tree().process_frame
 
 func process_bullets():
 	for b in bullets:
@@ -42,6 +50,8 @@ func process_bullets():
 			return
 		if is_instance_valid(b):
 			b.move()
+			await get_tree().physics_frame
+			await get_tree().process_frame
 
 func player_die():
 	if game_over:

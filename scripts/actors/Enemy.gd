@@ -35,20 +35,22 @@ func is_axis_aligned_with_player(player: Node2D) -> bool:
 
 
 func has_line_of_sight_to(player: Node2D) -> bool:
-	var my_cell     := get_cell_pos(global_position)
-	var player_cell := get_cell_pos(player.global_position)
+	#var my_cell     := get_cell_pos(global_position)
+	#var player_cell := get_cell_pos(player.global_position)
+	var my_cell = position
+	var player_cell = player.position
 
-	var dx_cells := player_cell.x - my_cell.x
-	var dy_cells := player_cell.y - my_cell.y
+	var dx_cells = player_cell.x - my_cell.x
+	var dy_cells = player_cell.y - my_cell.y
 
 	var cast_to: Vector2
 
 	if dx_cells == 0:
 		# same column → vertical cast
-		cast_to = Vector2(0, float(dy_cells) * TILE_SIZE)
+		cast_to = Vector2(0, float(dy_cells))
 	elif dy_cells == 0:
 		# same row → horizontal cast
-		cast_to = Vector2(float(dx_cells) * TILE_SIZE, 0)
+		cast_to = Vector2(float(dx_cells), 0)
 	else:
 		# Not truly aligned; extra safety
 		return false
@@ -56,9 +58,12 @@ func has_line_of_sight_to(player: Node2D) -> bool:
 	# RayCast2D target position is local to the raycast node
 	raycast.target_position = cast_to
 	raycast.force_raycast_update()
-
-	var hit = raycast.get_collider()
-	return hit == player
+	
+	if raycast.is_colliding():
+		var hit = raycast.get_collider()
+		return hit == player
+		
+	return false
 
 
 func shoot_at_player():
