@@ -13,6 +13,7 @@ var first_turn = false
 signal reset_signal
 signal start_turn(current_turn)
 signal player_died
+signal deal_died
 signal update_finger_counter(fingers)
 signal update_turn_counter(current_turn)
 signal update_honse_counter()
@@ -112,14 +113,23 @@ func player_die():
 		return
 	
 	game_over = true
+	player_died.emit()
+	
+func deal_die():
+	if game_over:
+		return
+	
+	game_over = true
 	DealManager.fingers = 5
 	update_finger_counter.emit(DealManager.fingers)
-	player_died.emit()
+	deal_died.emit()
 	
 func emit_to_ui():
 	update_turn_counter.emit(current_turn)
 	
 	if DealManager.next_forced_turn:
 		var turns_to_forced = DealManager.next_forced_turn - current_turn
+		print(turns_to_forced)
+		print(DealManager.next_forced_turn)
 		update_honse_counter.emit(turns_to_forced)
 	

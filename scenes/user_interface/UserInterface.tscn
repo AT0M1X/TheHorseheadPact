@@ -91,6 +91,7 @@ label_settings = SubResource("LabelSettings_aovcg")
 horizontal_alignment = 1
 
 [node name="Death" type="TextureRect" parent="UI Root"]
+layout_mode = 0
 offset_left = -745.0
 offset_top = -113.0
 offset_right = 1830.0

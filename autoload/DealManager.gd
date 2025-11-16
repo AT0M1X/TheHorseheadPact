@@ -53,16 +53,16 @@ func deal_accepted():
 	TurnManager.emit_to_ui()
 
 func deal_declined():
+	next_forced_turn = null
 	deal_accepted_flag = false
 	deal_event_declined.emit()
 	deal_event_end.emit()
 	TurnManager.emit_to_ui()
-	next_forced_turn = 0
 	
 	fingers -= 1
 	TurnManager.update_finger_counter.emit(fingers)
 	if fingers == 0:
-		TurnManager.player_die()
+		TurnManager.deal_die()
 
 func forced_turn_completed():
 	call_deferred("emit_signal", "forced_turn_end")

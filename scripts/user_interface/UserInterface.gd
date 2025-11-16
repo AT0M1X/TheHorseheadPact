@@ -35,7 +35,7 @@ func _ready():
 	TurnManager.connect("update_honse_counter", _update_honse_counter)
 	DealManager.connect("deal_event_start", _show_deal)
 	DealManager.connect("deal_event_next_action", _update_honse_action)
-	TurnManager.player_died.connect(_show_death)
+	TurnManager.deal_died.connect(_show_death)
 	
 func _update_finger_counter(finger_count):
 	_set_icon_by_index(5 - finger_count)
