@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bliqhmb13lo5p"]
+
+[ext_resource type="Script" uid="uid://bw6n0yyl1ar4u" path="res://scripts/intro/intro_scene.gd" id="1_jbds7"]
+[ext_resource type="VideoStream" uid="uid://cg2scjfql2kud" path="res://assets/videos/HorseHeadPact_IntroVideo.ogv" id="2_jbds7"]
+
+[node name="IntroScene" type="Node2D"]
+script = ExtResource("1_jbds7")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+offset_top = -4.0
+offset_right = 1920.0
+offset_bottom = 1916.0
+stream = ExtResource("2_jbds7")
