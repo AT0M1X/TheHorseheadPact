@@ -7,8 +7,11 @@ extends CanvasLayer
 @onready var accept_button: Button = $"UI Root/Deal/Accept Deal"
 @onready var decline_button: Button = $"UI Root/Deal/Decline Deal"
 @onready var deal: TextureRect = $"UI Root/Deal"
+@onready var death: TextureRect = $"UI Root/Death"
 
 @onready var audio = $Audio
+
+@export var deal_lable: Label
 
 var sound_break_finger = preload("res://assets/sound/av.wav")
 var sound_deal = preload("res://assets/sound/What do you say.wav")
@@ -25,12 +28,14 @@ var fingers := [
 
 func _ready():
 	_hide_deal()
+	death.visible = false
 	
 	TurnManager.connect("update_finger_counter", _update_finger_counter)
 	TurnManager.connect("update_turn_counter", _update_turn_counter)
 	TurnManager.connect("update_honse_counter", _update_honse_counter)
 	DealManager.connect("deal_event_start", _show_deal)
 	DealManager.connect("deal_event_next_action", _update_honse_action)
+	TurnManager.player_died.connect(_show_death)
 	
 func _update_finger_counter(finger_count):
 	_set_icon_by_index(5 - finger_count)
@@ -53,6 +58,7 @@ func _set_icon_by_index(index):
 		finger_counter.texture = fingers[index]
 
 func _show_deal():
+	_deal_text_update()
 	deal.visible = true
 	accept_button.visible = true
 	decline_button.visible = true
@@ -76,3 +82,21 @@ func _play_audio(audio_stream):
 	#audio.pitch_scale = randf_range(0.9, 1.1)
 	audio.stream = audio_stream
 	audio.play()
+	
+func _show_death():
+	_hide_deal()
+	death.visible = true
+
+func _deal_text_update():
+	deal_lable.text = "In %s" % (DealManager.next_forced_turn - TurnManager.current_turn) + " turns"
+	match DealManager.current_deal:
+		"All shoot":
+			deal_lable.text = deal_lable.text + " all penguin shoot at you."
+		"move up":
+			deal_lable.text = deal_lable.text + " I move you up."
+		"move down":
+			deal_lable.text = deal_lable.text + " I move you down."
+		"move right":
+			deal_lable.text = deal_lable.text + " I move you right."
+		"move left":
+			deal_lable.text = deal_lable.text + " I move you left."

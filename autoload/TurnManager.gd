@@ -75,7 +75,6 @@ func do_turn():
 		return
 		
 	await process_enemies()
-
 	
 	end_turn()
 
@@ -113,7 +112,9 @@ func player_die():
 		return
 	
 	game_over = true
-	emit_signal("player_died")
+	DealManager.fingers = 5
+	update_finger_counter.emit(DealManager.fingers)
+	player_died.emit()
 	
 func emit_to_ui():
 	update_turn_counter.emit(current_turn)

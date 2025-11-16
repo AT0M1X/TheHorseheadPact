@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtuhanki4xciu"]
+[gd_scene load_steps=15 format=3 uid="uid://dtuhanki4xciu"]
 
 [ext_resource type="Texture2D" uid="uid://bq5nbnu2qmksx" path="res://assets/art/0_-_Full_hand.png" id="1_0duag"]
 [ext_resource type="Script" uid="uid://dqoca2s0s2vlm" path="res://scripts/user_interface/UserInterface.gd" id="1_xfl3k"]
@@ -20,6 +20,11 @@ font_size = 30
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_iuafk"]
+font = ExtResource("7_aovcg")
+font_size = 200
+font_color = Color(1, 0.2, 0.2, 1)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1l8s8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pikq3"]
@@ -30,8 +35,14 @@ font_size = 68
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
-[node name="User Interface" type="CanvasLayer"]
+[sub_resource type="LabelSettings" id="LabelSettings_xhgdr"]
+font = ExtResource("7_aovcg")
+font_size = 36
+font_color = Color(0, 0, 0, 1)
+
+[node name="User Interface" type="CanvasLayer" node_paths=PackedStringArray("deal_lable")]
 script = ExtResource("1_xfl3k")
+deal_lable = NodePath("UI Root/Deal/Label/Label/Label")
 
 [node name="UI Root" type="Control" parent="."]
 layout_mode = 3
@@ -78,6 +89,45 @@ offset_right = 205.0
 offset_bottom = 290.0
 label_settings = SubResource("LabelSettings_aovcg")
 horizontal_alignment = 1
+
+[node name="Death" type="TextureRect" parent="UI Root"]
+offset_left = -745.0
+offset_top = -113.0
+offset_right = 1830.0
+offset_bottom = 733.0
+texture = ExtResource("4_pikq3")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="UI Root/Death"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -969.5
+offset_top = -444.0
+offset_right = 1241.5
+offset_bottom = 493.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="UI Root/Death"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "You died!!"
+label_settings = SubResource("LabelSettings_iuafk")
 
 [node name="Deal" type="TextureRect" parent="UI Root"]
 layout_mode = 1
@@ -167,6 +217,26 @@ offset_right = 1021.0
 offset_bottom = 562.0
 text = "Eh, whaddya say, kid?"
 label_settings = SubResource("LabelSettings_acf64")
+
+[node name="Label" type="Label" parent="UI Root/Deal/Label"]
+layout_mode = 0
+offset_left = -383.0
+offset_top = -317.0
+offset_right = -30.0
+offset_bottom = -218.0
+rotation = -0.0839935
+text = "I don't chop your
+fingers off"
+label_settings = SubResource("LabelSettings_xhgdr")
+
+[node name="Label" type="Label" parent="UI Root/Deal/Label/Label"]
+layout_mode = 0
+offset_left = -2.31648
+offset_top = 87.1128
+offset_right = 315.684
+offset_bottom = 237.113
+label_settings = SubResource("LabelSettings_xhgdr")
+autowrap_mode = 3
 
 [node name="Audio" type="AudioStreamPlayer2D" parent="."]
 

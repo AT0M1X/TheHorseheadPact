@@ -2,7 +2,7 @@ extends Node
 
 var deal_list = ["All shoot", "move down", "move up", "move right", "move left"]
 var deal_to_pick = 0
-var deal_turn_modifier = 5
+var deal_turn_modifier = 7
 var deal_accepted_flag = false
 var current_deal
 var next_forced_turn
@@ -20,6 +20,7 @@ signal forced_turn_action(action: String)
 func pick_deal():
 	current_deal = deal_list[deal_to_pick]
 	deal_to_pick += 1
+	next_forced_turn = TurnManager.current_turn + randi_range(2, 5)
 	reset_deals()
 
 func reset_deals():
@@ -28,8 +29,8 @@ func reset_deals():
 
 func do_deal_event_turn(turn_number):
 	if not deal_accepted_flag and (turn_number % deal_turn_modifier + randi_range(-2, 2) == 0):
-		deal_event_start.emit()
 		pick_deal()
+		deal_event_start.emit()
 		return true
 	else:
 		return false
@@ -46,7 +47,6 @@ func do_forced_turn(turn_number):
 
 func deal_accepted():
 	deal_accepted_flag = true
-	next_forced_turn = TurnManager.current_turn + randi_range(2, 5)
 	deal_event_accepted.emit()
 	deal_event_end.emit()
 	deal_event_next_action.emit(current_deal)
@@ -57,9 +57,12 @@ func deal_declined():
 	deal_event_declined.emit()
 	deal_event_end.emit()
 	TurnManager.emit_to_ui()
+	next_forced_turn = 0
 	
 	fingers -= 1
 	TurnManager.update_finger_counter.emit(fingers)
+	if fingers == 0:
+		TurnManager.player_die()
 
 func forced_turn_completed():
 	call_deferred("emit_signal", "forced_turn_end")
