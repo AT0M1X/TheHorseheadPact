@@ -21,6 +21,11 @@ TurnManager="*res://autoload/TurnManager.gd"
 Settings="*res://autoload/Settings.gd"
 DealManager="*res://autoload/DealManager.gd"
 
+[display]
+
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+
 [global_group]
 
 enemies=""
