@@ -86,6 +86,7 @@ func _play_audio(audio_stream):
 func _show_death():
 	_hide_deal()
 	death.visible = true
+	$"UI Root/Death/VideoStreamPlayer".play();
 
 func _deal_text_update():
 	deal_lable.text = "In %s" % (DealManager.next_forced_turn - TurnManager.current_turn) + " turns"
